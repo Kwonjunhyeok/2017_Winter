@@ -1,6 +1,9 @@
 ﻿{
   "dependencies": {
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0"
+    "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.4",
+    "Microsoft.Toolkit.Uwp.UI.Controls": "2.1.1",
+    "Newtonsoft.Json": "10.0.3",
+    "PullToRefresh.UWP": "0.3.4"
   },
   "frameworks": {
     "uap10.0": {}

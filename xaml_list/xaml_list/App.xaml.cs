@@ -15,7 +15,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-namespace Korbit_Status
+namespace xaml_list
 {
     /// <summary>
     /// 기본 응용 프로그램 클래스를 보완하는 응용 프로그램별 동작을 제공합니다.

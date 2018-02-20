@@ -7,7 +7,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:UWPToolkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:ptr="using:PullToRefresh.UWP"
     mc:Ignorable="d">
 
 
@@ -162,9 +161,10 @@
             </TextBlock>
 
             <!--매수 코인 개수 입력-->
-            <TextBox x:Name="B_OR" RelativePanel.Below="B_Order_Rate" FontSize="10"
+            <TextBox x:Name="B_OR" RelativePanel.Below="B_Order_Rate" FontSize="10" Text="1"
                      TextChanged="B_OR_TextChanged" Height="32" VerticalAlignment="Bottom"/>
-            <TextBlock Text="BTC" FontSize="15" Margin="5"
+            
+            <TextBlock Text="BTC" FontSize="15" Margin="5" x:Name="Buy_Rate_Name"
                 RelativePanel.Below="B_Order_Rate" RelativePanel.RightOf="B_OR"></TextBlock>
 
             <TextBlock x:Name="B_Expected_Spend" Text="예상지출액" FontSize="6" FontStyle="Italic"
@@ -282,19 +282,15 @@
                     <Run Text="            거래량"></Run>
                 </TextBlock>
             </StackPanel>
-            
-            <!--
-            <ptr:PullToRefreshBox x:Name="PtrBox"
-                                  RefreshInvoked="PtrBox_RefreshInvoked">
-              -->  
-                <ListView x:Name="ListInvest_Chart" Margin="10,10,10,0" RelativePanel.Below="Kind"
+
+
+            <ListView x:Name="ListInvest_Chart" Margin="10,10,10,0" RelativePanel.Below="Kind"
                       Width="1200" Height="200">
-               
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="local2:Price_List">
                         <StackPanel Orientation="Horizontal" >
                             <!--코인-->
-                            <TextBlock FontSize="12dp" Width="110dp" x:Phase="1" Text="{x:Bind Coin_Name}"></TextBlock>
+                            <TextBlock x:Name="not_name" FontSize="12dp" Width="110dp" x:Phase="1" Text="{x:Bind Coin_Name}"></TextBlock>
 
                             <!--현재가-->
                             <TextBlock FontSize="12dp" Width="120dp" Text="{Binding Last}"></TextBlock>
@@ -315,7 +311,9 @@
                             <TextBlock FontSize="12dp" Width="180dp" Text="{Binding Change}"></TextBlock>
 
                             <!--변동률-->
-                            <TextBlock FontSize="12dp" Width="140dp" Text="{Binding ChangePercent}"></TextBlock>
+                            <TextBlock x:Name="Rate_Color" FontSize="12dp" Width="140dp" Text="{Binding ChangePercent}">
+                                   
+                            </TextBlock>
 
                             <!--거래량-->
                             <TextBlock FontSize="12dp" Text="{Binding Volume}"></TextBlock>
@@ -323,16 +321,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
                 </ListView>
-            <!--
-                <ptr:PullToRefreshBox.TopIndicatorTemplate>
-                    <DataTemplate>
-                        <ptr:PullRefreshProgressControl Progress="{Binding}"
-                                                        PullToRefreshText="Pull"
-                                                        ReleaseToRefreshText="Release"/>
-                    </DataTemplate>
-                </ptr:PullToRefreshBox.TopIndicatorTemplate>
-            </ptr:PullToRefreshBox>
-            -->
+          
         </RelativePanel>
         
 

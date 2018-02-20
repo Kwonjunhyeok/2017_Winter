@@ -96,6 +96,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Buy_MenuFlyoutItem.cs" />
     <Compile Include="final_price\PublicTicker_Main.cs" />
     <Compile Include="List\Investment.cs" />
     <Compile Include="List\Price_List.cs" />

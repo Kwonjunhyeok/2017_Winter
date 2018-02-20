@@ -27,14 +27,14 @@
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <!--최종체결가격-->
-                            <TextBlock FontSize="12dp" Width="80dp" Text="{Binding Sname}"></TextBlock>
+                            <TextBlock FontSize="12dp" Width="80" Text="{Binding Sname}"></TextBlock>
                             <!--매도가-->
-                            <TextBlock FontSize="12dp" Width="50dp" Margin="5,0,0,0" Text="{Binding Hstock}"></TextBlock>
+                            <TextBlock FontSize="12dp" Width="50" Margin="5,0,0,0" Text="{Binding Hstock}"></TextBlock>
                             <!--현재가-->
-                            <TextBlock FontSize="12dp" Width="50dp" Margin="5,0,0,0" Text="{Binding Smoney}"></TextBlock>
+                            <TextBlock FontSize="12dp" Width="50" Margin="5,0,0,0" Text="{Binding Smoney}"></TextBlock>
                             <!---->
-                            <TextBlock FontSize="12dp" Width="50dp" Margin="5,0,0,0" Text="{Binding Sper}"></TextBlock>
-                            <TextBlock FontSize="12dp" Margin="10,0,0,0" Width="50dp" Text="목표 금액 ->"></TextBlock>
+                            <TextBlock FontSize="12dp" Width="50" Margin="5,0,0,0" Text="{Binding Sper}"></TextBlock>
+                            <TextBlock FontSize="12dp" Margin="10,0,0,0" Width="50" Text="목표 금액 ->"></TextBlock>
                             
                             <!--목표 금액 쓰기-->
                             <TextBox x:Name="Goal" FontSize="12dp" Margin="20,0,0,0"></TextBox>
@@ -252,15 +252,14 @@
         <!--매도 매수-->
 
         <!--최종 체결표 리스트-->
-        <RelativePanel Canvas.Top="231" Width="1200" Height="270" Background="White"
-                       Canvas.Left="10">
+        <RelativePanel Canvas.Top="231" Height="270" Background="White" Canvas.Left="10" Width="1490">
 
             <TextBlock x:Name="Chart" RelativePanel.AlignHorizontalCenterWithPanel="True"
                        FontStyle="Oblique" FontWeight="Bold">최종 체결표"</TextBlock>
 
             <!--체결 시간-->
             <TextBlock  x:Name="Time_Block" RelativePanel.AlignRightWithPanel="True"
-                        RelativePanel.Below="Chart">
+                        RelativePanel.Below="Chart" Text="{x:Bind LiveTime, Mode=OneWay}">
             </TextBlock>
 
             <!--종목-->
@@ -279,6 +278,7 @@
                     <Run Text="             RATE"></Run>
                     <Run FontSize="5" Foreground="#00B7C3" Text="(최근 24 시간)"></Run>
                     <Run Text="            거래량"></Run>
+                    <Run Text="                             시간"></Run>
                 </TextBlock>
             </StackPanel>
             
@@ -286,38 +286,40 @@
             <ptr:PullToRefreshBox x:Name="PtrBox"
                                   RefreshInvoked="PtrBox_RefreshInvoked">
               -->  
-                <ListView x:Name="ListInvest_Chart" Margin="10,10,10,0" RelativePanel.Below="Kind"
-                      Width="1200" Height="200">
+                <ListView x:Name="ListInvest_Chart" Margin="10,10,10,0" RelativePanel.Below="Kind" Height="200">
                
                 <ListView.ItemTemplate>
                     <DataTemplate >
                         <StackPanel Orientation="Horizontal" >
                             <!--코인-->
-                            <TextBlock FontSize="12dp" Width="110dp" Text="{Binding Coin_Name}"></TextBlock>
+                            <TextBlock FontSize="12dp" Width="110" Text="{Binding CoinName}"></TextBlock>
 
                             <!--현재가-->
-                            <TextBlock FontSize="12dp" Width="120dp" Text="{Binding Last}"></TextBlock>
+                            <TextBlock FontSize="12dp" Width="120" Text="{Binding last}"></TextBlock>
 
                             <!--매수가-->
-                            <TextBlock FontSize="12dp" Width="120dp" Text="{Binding Bid}"></TextBlock>
+                            <TextBlock FontSize="12dp" Width="120" Text="{Binding bid}"></TextBlock>
 
                             <!--매도가-->
-                            <TextBlock FontSize="12dp" Width="120dp" Text="{Binding Ask}"></TextBlock>
+                            <TextBlock FontSize="12dp" Width="120" Text="{Binding ask}"></TextBlock>
 
                             <!--최저가 (24시기준)-->
-                            <TextBlock FontSize="12dp" Width="160dp" Text="{Binding Low}"></TextBlock>
+                            <TextBlock FontSize="12dp" Width="160" Text="{Binding low}"></TextBlock>
 
                             <!--최고가 (24시기준)-->
-                            <TextBlock FontSize="12dp" Width="150dp" Text="{Binding High}"></TextBlock>
+                            <TextBlock FontSize="12dp" Width="150" Text="{Binding high}"></TextBlock>
 
                             <!--변동 금액-->
-                            <TextBlock FontSize="12dp" Width="180dp" Text="{Binding Change}"></TextBlock>
+                            <TextBlock FontSize="12dp" Width="180" Text="{Binding change}"></TextBlock>
 
                             <!--변동률-->
-                            <TextBlock FontSize="12dp" Width="140dp" Text="{Binding ChangePercent}"></TextBlock>
+                            <TextBlock FontSize="12dp" Width="140" Text="{Binding changePercent}"></TextBlock>
 
                             <!--거래량-->
-                            <TextBlock FontSize="12dp" Text="{Binding Volume}"></TextBlock>
+                            <TextBlock FontSize="12dp" Width="200" Text="{Binding volume}"></TextBlock>
+
+                            <!--시간-->
+                            <TextBlock FontSize="12dp" Width="200" Text="{Binding TimeStampFormatting}"></TextBlock>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
@@ -359,13 +361,13 @@
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
                             <!--종류-->
-                            <TextBlock FontSize="12dp" Width="80dp" Text="{Binding Sname}"></TextBlock>
+                            <TextBlock FontSize="12dp" Width="80" Text="{Binding Sname}"></TextBlock>
                             <!--요청시간-->
-                            <TextBlock FontSize="12dp" Width="50dp" Margin="5,0,0,0" Text="{Binding Hstock}"></TextBlock>
+                            <TextBlock FontSize="12dp" Width="50" Margin="5,0,0,0" Text="{Binding Hstock}"></TextBlock>
                             <!--주문량-->
-                            <TextBlock FontSize="12dp" Width="50dp" Margin="5,0,0,0" Text="{Binding Smoney}"></TextBlock>
+                            <TextBlock FontSize="12dp" Width="50" Margin="5,0,0,0" Text="{Binding Smoney}"></TextBlock>
                             <!--체결가-->
-                            <TextBlock FontSize="12dp" Width="50dp" Margin="5,0,0,0" Text="{Binding Sper}"></TextBlock>
+                            <TextBlock FontSize="12dp" Width="50" Margin="5,0,0,0" Text="{Binding Sper}"></TextBlock>
                             <!--총체결-->
                             <TextBlock FontSize="12dp" Margin="10,0,0,0"  Text="목표 금액 ->"></TextBlock>
                         </StackPanel>

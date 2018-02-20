@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace xaml_list.List
 {
@@ -34,5 +30,10 @@ namespace xaml_list.List
 
         //변동률
         public string ChangePercent { get; set; }
+
+        internal void Add(Price_List price_List)
+        {
+            throw new NotImplementedException();
+        }
     } 
 }

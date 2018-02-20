@@ -8,6 +8,7 @@ using Windows.UI.Xaml.Controls;
 using xaml_list.final_price;
 using xaml_list.List;
 using System.Diagnostics;
+using System.Collections.ObjectModel;
 
 //using WebService.PublicTicker_Variable;
 
@@ -25,7 +26,8 @@ namespace xaml_list
                                                 "ETHEREUM","ETHEREUM_CLASS", "REPLE",};
 
         private List<Investment> rate = new List<Investment>();
-        private List<Price_List> Price = new List<Price_List>();
+        //private List<Price_List> Price = new List<Price_List>();
+        ObservableCollection<Price_List> Price = new ObservableCollection<Price_List>();
 
         public MainPage()
         {
@@ -44,19 +46,12 @@ namespace xaml_list
         }
 
 
-        private void PtrBox_RefreshInvoked(DependencyObject sender, object args)
-        {
-
-        }
-
-
-
         // json 처리
         async void getListData()
         {
             while (true)
             {
-                
+                string [] arr = new string[6];
                 for (int i = 0; i < 6; i++)
                 {
                     string url = "https://api.korbit.co.kr/v1/ticker/detailed?currency_pair=" + Coins[i];
@@ -65,8 +60,14 @@ namespace xaml_list
                     HttpClient client = new HttpClient();
 
                     string response = await client.GetStringAsync(url);
-                    // json 데이터 가져오기
-                    var data = JsonConvert.DeserializeObject<Rootobject>(response);
+                    arr[i] = response;
+                    // json 데이터 가져오기\
+                }
+
+                int idx = 0;
+                foreach (string res in arr)
+                {
+                    var data = JsonConvert.DeserializeObject<Rootobject>(res);
 
                     Debug.WriteLine("Log : " + data.last);
                     Time = long.Parse(data.timestamp.ToString());
@@ -76,10 +77,9 @@ namespace xaml_list
 
                     Time_Block.Text = dateTime.ToString();
 
-                    
                     Price.Add(new Price_List
                     {
-                        Coin_Name = Coin_List[i],
+                        Coin_Name = Coin_List[idx],
                         Last = data.last,
                         Bid = data.bid,
                         Ask = data.ask,
@@ -89,14 +89,15 @@ namespace xaml_list
                         ChangePercent = data.changePercent,
                         Volume = data.volume
                     });
+                    idx++;
                 }
                 //ListInvest_Chart 에  Pirce 값을 넣음
                 ListInvest_Chart.ItemsSource = Price;
-                Storage.ItemsSource = Price;
-
+                Storage.ItemsSource = null;
+                
 
                 await Task.Delay(5000);
-                
+                Price.Clear();
             }
         }
 
@@ -297,8 +298,6 @@ namespace xaml_list
             B_O.Text = data.ToString();
             Buy_Btc.Content = "REPLE-XRP";
         }
-
-       
 
     }
 }

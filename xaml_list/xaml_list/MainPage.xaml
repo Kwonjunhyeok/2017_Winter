@@ -292,7 +292,9 @@
                     <DataTemplate >
                         <StackPanel Orientation="Horizontal" >
                             <!--코인-->
-                            <TextBlock FontSize="12dp" Width="110" Text="{Binding CoinName}"></TextBlock>
+                            <Border Background="Yellow">
+                                <TextBlock FontSize="12dp" Width="110" Text="{Binding CoinName}"/>
+                            </Border>
 
                             <!--현재가-->
                             <TextBlock FontSize="12dp" Width="120" Text="{Binding last}"></TextBlock>

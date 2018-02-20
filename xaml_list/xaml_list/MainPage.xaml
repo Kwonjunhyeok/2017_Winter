@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:xaml_list"
+    xmlns:local2="using:xaml_list.List"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:UWPToolkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
@@ -289,7 +290,7 @@
                 <ListView x:Name="ListInvest_Chart" Margin="10,10,10,0" RelativePanel.Below="Kind" Height="200">
                
                 <ListView.ItemTemplate>
-                    <DataTemplate >
+                    <DataTemplate x:DataType="local2:Price_List">
                         <StackPanel Orientation="Horizontal" >
                             <!--코인-->
                             <Border Background="Yellow">

@@ -55,13 +55,6 @@ namespace xaml_list
             timer.Start();
         }
 
-        private void PtrBox_RefreshInvoked(DependencyObject sender, object args)
-        {
-
-        }
-
-
-
         // json 처리
         async void getListData()
         {            
@@ -292,8 +285,6 @@ namespace xaml_list
             B_O.Text = data.ToString();
             Buy_Btc.Content = "REPLE-XRP";
         }
-
-       
 
     }
 }

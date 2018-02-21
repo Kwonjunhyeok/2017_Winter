@@ -290,8 +290,9 @@
                     <DataTemplate x:DataType="local2:Price_List">
                         <StackPanel Orientation="Horizontal" >
                             <!--코인-->
-                            <TextBlock x:Name="not_name" FontSize="12dp" Width="110dp" x:Phase="1" Text="{x:Bind Coin_Name}"></TextBlock>
-
+                            
+                            <TextBlock FontSize="12dp" Width="110" Text="{Binding CoinName}"/>
+                            
                             <!--현재가-->
                             <TextBlock FontSize="12dp" Width="120dp" Text="{Binding Last}"></TextBlock>
 

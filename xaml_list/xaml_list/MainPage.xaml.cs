@@ -317,8 +317,6 @@ namespace xaml_list
                 Buy_Rate_Name.Text = "XRP";
                 B_ES.Text = (long.Parse(B_OR.Text.ToString()) * long.Parse(data.ToString())).ToString();
         }
-        
 
-        
     }
 }

@@ -9,6 +9,7 @@ using xaml_list.final_price;
 using xaml_list.List;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace xaml_list
 {
@@ -16,20 +17,24 @@ namespace xaml_list
     /// 자체적으로 사용하거나 프레임 내에서 탐색할 수 있는 빈 페이지입니다.
     /// </summary>
     /// 
-    public sealed partial class MainPage : Page
+    public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
-        long Time; // 시간 가져오는 변수
-        int Num;
+        long Time;
         static string[] Coins = new string[6] { "btc_krw", "bch_krw", "btg_krw", "eth_krw", "etc_krw", "xrp_krw", };
         static string[] Coin_List = new string[6] { "BITCOIN", "BITCOIN_CASH", "BITCOIN_COLD",
                                                 "ETHEREUM","ETHEREUM_CLASS", "REPLE",};
 
         private List<Investment> rate = new List<Investment>();
+        //private List<Price_List> Price = new List<Price_List>();
         ObservableCollection<Price_List> Price = new ObservableCollection<Price_List>();
+
+        public string LiveTime => DateTime.Now.ToString();
 
         public MainPage()
         {
             this.InitializeComponent();
+
+            LiveTimer();
 
             rate.Add(new Investment { Sname = "모네로 ->", Hstock = 530000, Smoney = 70000, Sper = 32, Goal = 800000 });
             rate.Add(new Investment { Sname = "리플 ->", Hstock = 4300, Smoney = 3800, Sper = -13, Goal = 4500 });
@@ -40,15 +45,21 @@ namespace xaml_list
 
             init_Sell_Buy();
             getListData();
+
         }
 
+        private void LiveTimer()
+        {
+            DispatcherTimer timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+            timer.Tick += (s, e) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs((nameof(LiveTime))));
+            timer.Start();
+        }
 
         // json 처리
         async void getListData()
         {
             while (true)
             {
-                string [] arr = new string[6];
                 for (int i = 0; i < 6; i++)
                 {
                     string url = "https://api.korbit.co.kr/v1/ticker/detailed?currency_pair=" + Coins[i];
@@ -57,52 +68,47 @@ namespace xaml_list
                     HttpClient client = new HttpClient();
 
                     string response = await client.GetStringAsync(url);
-                    arr[i] = response;
-                    // json 데이터 가져오기\
-                }
+                    // json 데이터 가져오기
+                    var data = JsonConvert.DeserializeObject<Rootobject>(response);
+                    data.CoinName = Coin_List[i];
 
-                Price.Clear();
-                int idx = 0;
-                foreach (string res in arr)
-                {
-                    var data = JsonConvert.DeserializeObject<Rootobject>(res);
-
-                    Debug.WriteLine("Log : " + data.last);
-                    Time = long.Parse(data.timestamp.ToString());
-
-                    DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeMilliseconds(Time);
-                    DateTime dateTime = dateTimeOffset.UtcDateTime.ToLocalTime();
-
-                    Time_Block.Text = dateTime.ToString();
-                    
-                   
-
-                    //Price_List 클래스에 데이터 넣기
-                    Price.Add(new Price_List
+                    int idx = 0;
+                    foreach (string res in arr)
                     {
-                        Coin_Name = Coin_List[idx],
-                        Last = data.last,
-                        Bid = data.bid,
-                        Ask = data.ask,
-                        High = data.high,
-                        Low = data.low,
-                        Change = data.change,
-                        ChangePercent = data.changePercent,
-                        Volume = data.volume
-                    });
-                    idx++;
-                }
-                //ListInvest_Chart 에  Pirce 값을 넣음
-                ListInvest_Chart.ItemsSource = Price;
-                Storage.ItemsSource = null;
-                
+                        var data = JsonConvert.DeserializeObject<Rootobject>(res);
 
-                await Task.Delay(10000);
+                        Debug.WriteLine("Log : " + data.last);
+
+                        DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeMilliseconds(Time);
+                        DateTime dateTime = dateTimeOffset.UtcDateTime.ToLocalTime();
+
+                        Time_Block.Text = dateTime.ToString();
+
+                        Price.Add(new Price_List
+                        {
+                            Coin_Name = Coin_List[idx],
+                            Last = data.last,
+                            Bid = data.bid,
+                            Ask = data.ask,
+                            High = data.high,
+                            Low = data.low,
+                            Change = data.change,
+                            ChangePercent = data.changePercent,
+                            Volume = data.volume
+                        });
+                        idx++;
+                    }
+                    //ListInvest_Chart 에  Pirce 값을 넣음
+                    ListInvest_Chart.ItemsSource = Price;
+                    Storage.ItemsSource = null;
+
+
+                    await Task.Delay(5000);
+                    Price.Clear();
+                }
             }
         }
 
-
-        //최종가격 반환
         async Task<string> json_last(int i)
         {
                 string url = "https://api.korbit.co.kr/v1/ticker/detailed?currency_pair=" + Coins[i];
@@ -115,10 +121,10 @@ namespace xaml_list
 
         async void init_Sell_Buy()
         {
-                string data = await json_last(0);
-                B_O.Text = data.ToString();
-                S_O.Text = data.ToString();
-                B_ES.Text = data.ToString();
+            string data = await json_last(0);
+
+            B_O.Text = data.ToString();
+            S_O.Text = data.ToString();
         }
 
 
@@ -248,6 +254,8 @@ namespace xaml_list
         int Wdrwa;
         private int num;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         //출금
         private void Wd_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
@@ -266,56 +274,44 @@ namespace xaml_list
         // Buy_MenuFlyoutItem 조정
         private async void B_Btc_Click(object sender, RoutedEventArgs e)
         {
-                string data = await json_last(0);
-                B_O.Text = data.ToString();
-                Buy_Btc.Content = "BITCOIN - BTC";
-                Buy_Rate_Name.Text = "BTC";
-                B_ES.Text = (long.Parse(B_OR.Text.ToString()) * long.Parse(data.ToString())).ToString();
+            string data = await json_last(0);
+            B_O.Text = data.ToString();
+            Buy_Btc.Content = "BITCOIN - BTC";
         }
 
         private async void B_Btg_Click(object sender, RoutedEventArgs e)
         {
-                string data = await json_last(1);
-                B_O.Text = data.ToString();
-                Buy_Btc.Content = "BITCOINGOLD-BTG";
-                Buy_Rate_Name.Text = "BTG";
-                B_ES.Text = (long.Parse(B_OR.Text.ToString()) * long.Parse(data.ToString())).ToString();
+            string data = await json_last(1);
+            B_O.Text = data.ToString();
+            Buy_Btc.Content = "BITCOINGOLD-BTG";
         }
 
         private async void B_Bth_Click(object sender, RoutedEventArgs e)
         {
-                string data = await json_last(2);
-                B_O.Text = data.ToString();
-                Buy_Btc.Content = "BITCOINCASH-BTH";
-                Buy_Rate_Name.Text = "BTH";
-                B_ES.Text = (long.Parse(B_OR.Text.ToString()) * long.Parse(data.ToString())).ToString();
+            string data = await json_last(2);
+            B_O.Text = data.ToString();
+            Buy_Btc.Content = "BITCOINCASH-BTH";
         }
 
         private async void B_Eth_Click(object sender, RoutedEventArgs e)
-        { 
-                string data = await json_last(3);
-                B_O.Text = data.ToString();
-                Buy_Btc.Content = "ETHEREUM-ETH";
-                Buy_Rate_Name.Text = "BTH";
-                B_ES.Text = (long.Parse(B_OR.Text.ToString()) * long.Parse(data.ToString())).ToString();
+        {
+            string data = await json_last(3);
+            B_O.Text = data.ToString();
+            Buy_Btc.Content = "ETHEREUM-ETH";
         }
 
         private async void B_Etc_Click(object sender, RoutedEventArgs e)
         {
-                string data = await json_last(4);
-                B_O.Text = data.ToString();
-                Buy_Btc.Content = "ETHEREUM_CLASS-ETC";
-                Buy_Rate_Name.Text = "BTC";
-                B_ES.Text = (long.Parse(B_OR.Text.ToString()) * long.Parse(data.ToString())).ToString();
+            string data = await json_last(4);
+            B_O.Text = data.ToString();
+            Buy_Btc.Content = "ETHEREUM_CLASS-ETC";
         }
 
         private async void B_Xrp_Click(object sender, RoutedEventArgs e)
         {
-                string data = await json_last(5);
-                B_O.Text = data.ToString();
-                Buy_Btc.Content = "REPLE-XRP";
-                Buy_Rate_Name.Text = "XRP";
-                B_ES.Text = (long.Parse(B_OR.Text.ToString()) * long.Parse(data.ToString())).ToString();
+            string data = await json_last(5);
+            B_O.Text = data.ToString();
+            Buy_Btc.Content = "REPLE-XRP";
         }
 
     }

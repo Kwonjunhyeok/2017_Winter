@@ -288,13 +288,13 @@
                                   RefreshInvoked="PtrBox_RefreshInvoked">
               -->  
                 <ListView x:Name="ListInvest_Chart" Margin="10,10,10,0" RelativePanel.Below="Kind"
-                      Width="1200" Height="200">
+                      Width="1460" Height="200">
                
                 <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="local2:Price_List">
+                    <DataTemplate>
                         <StackPanel Orientation="Horizontal" >
                             <!--코인-->
-                            <TextBlock FontSize="12dp" Width="110dp" x:Phase="1" Text="{x:Bind Coin_Name}"></TextBlock>
+                            <TextBlock FontSize="12dp" Width="110" Text="{Binding CoinName}"></TextBlock>
 
                             <!--현재가-->
                             <TextBlock FontSize="12dp" Width="120" Text="{Binding last}"></TextBlock>
@@ -315,7 +315,7 @@
                             <TextBlock FontSize="12dp" Width="180" Text="{Binding change}"></TextBlock>
 
                             <!--변동률-->
-                            <TextBlock FontSize="12dp" Width="140dp" Text="{Binding ChangePercent}"></TextBlock>
+                            <TextBlock FontSize="12dp" Width="140" Text="{Binding changePercent}"></TextBlock>
 
                             <!--거래량-->
                             <TextBlock FontSize="12dp" Width="200" Text="{Binding volume}"></TextBlock>

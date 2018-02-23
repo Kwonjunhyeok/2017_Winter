@@ -28,17 +28,7 @@ namespace xaml_list
     /// </summary>
     /// 
     public sealed partial class MainPage : Page, INotifyPropertyChanged
-    {
-        private Dictionary<Coins, string> CoinnameDictionary = new Dictionary<Coins, string>()
-        {
-            [Coins.btc_krw] = "BITCOIN",
-            [Coins.bch_krw] = "BITCOIN_CASH",
-            [Coins.btg_krw] = "BITCOIN_COLD",
-            [Coins.eth_krw] = "ETHEREUM",
-            [Coins.etc_krw] = "ETHEREUM_CLASS",
-            [Coins.xrp_krw] = "REPLE",
-        };
-            
+    {    
         private List<Investment> rate = new List<Investment>();
         ObservableCollection<Rootobject> Price = new ObservableCollection<Rootobject>();
 
@@ -104,7 +94,7 @@ namespace xaml_list
                     string response = await client.GetStringAsync(GetCoinURL(coin));
                     // json 데이터 가져오기
                     var data = JsonConvert.DeserializeObject<Rootobject>(response);
-                    data.CoinName = CoinnameDictionary[coin];
+                    data.Coin = coin;
                     Price.Add(data);
                 }
             };

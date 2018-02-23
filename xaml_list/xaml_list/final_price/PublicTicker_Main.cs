@@ -9,9 +9,25 @@ namespace xaml_list.final_price
 {
     public class Rootobject
     {
-        //현재 시간
-        public string CoinName { get; set; }
+        private static Dictionary<Coins, string> CoinnameDictionary = new Dictionary<Coins, string>()
+        {
+            [Coins.btc_krw] = "BITCOIN",
+            [Coins.bch_krw] = "BITCOIN_CASH",
+            [Coins.btg_krw] = "BITCOIN_COLD",
+            [Coins.eth_krw] = "ETHEREUM",
+            [Coins.etc_krw] = "ETHEREUM_CLASS",
+            [Coins.xrp_krw] = "REPLE",
+        };
 
+        public Coins Coin { get; set; } 
+        
+        public string CoinName
+        {
+            get
+            {
+                return CoinnameDictionary[Coin];
+            }
+        }
         //현재 시간
         public long timestamp { get; set; }
 

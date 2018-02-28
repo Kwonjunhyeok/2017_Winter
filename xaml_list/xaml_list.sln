@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kobit_InvestStatus", "xaml_list\Kobit_InvestStatus.csproj", "{7B112B67-086C-4A88-8AFA-6EB9E486C668}"
 EndProject
@@ -18,6 +18,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{7B112B67-086C-4A88-8AFA-6EB9E486C668}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{7B112B67-086C-4A88-8AFA-6EB9E486C668}.Debug|Any CPU.Build.0 = Debug|x86
+		{7B112B67-086C-4A88-8AFA-6EB9E486C668}.Debug|Any CPU.Deploy.0 = Debug|x86
 		{7B112B67-086C-4A88-8AFA-6EB9E486C668}.Debug|ARM.ActiveCfg = Debug|ARM
 		{7B112B67-086C-4A88-8AFA-6EB9E486C668}.Debug|ARM.Build.0 = Debug|ARM
 		{7B112B67-086C-4A88-8AFA-6EB9E486C668}.Debug|ARM.Deploy.0 = Debug|ARM
@@ -40,5 +42,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {55E5B127-4D23-4688-96F6-4DA1CB3C44A1}
 	EndGlobalSection
 EndGlobal

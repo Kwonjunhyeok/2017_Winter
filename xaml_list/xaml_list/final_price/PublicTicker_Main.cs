@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Net;
 using System.IO;
+using Windows.UI.Xaml.Media;
 
 namespace xaml_list.final_price
 {
@@ -13,7 +14,7 @@ namespace xaml_list.final_price
         {
             [Coins.btc_krw] = "BITCOIN",
             [Coins.bch_krw] = "BITCOIN_CASH",
-            [Coins.btg_krw] = "BITCOIN_COLD",
+            [Coins.btg_krw] = "BITCOIN_GOLD",
             [Coins.eth_krw] = "ETHEREUM",
             [Coins.etc_krw] = "ETHEREUM_CLASS",
             [Coins.xrp_krw] = "REPLE",
@@ -54,8 +55,7 @@ namespace xaml_list.final_price
 
         //변동률
         public float changePercent { get; set; }
-
-        //시간 formating
+                
         public DateTime TimeStampFormatting
         {
             get
@@ -65,6 +65,23 @@ namespace xaml_list.final_price
 
                 return dateTime;
             }
+        }
+
+        //public SolidColorBrush Color
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            return Coin == (obj as Rootobject).Coin;
+        }
+
+        public override int GetHashCode()
+        {
+            return Coin.GetHashCode();
         }
     }
 }

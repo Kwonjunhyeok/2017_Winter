@@ -13,110 +13,15 @@ using System.ComponentModel;
 
 namespace xaml_list
 {
-    public enum Coins
-    {
-        btc_krw,
-        bch_krw,
-        btg_krw,
-        eth_krw,
-        etc_krw,
-        xrp_krw
-    }
-
     /// <summary>
     /// 자체적으로 사용하거나 프레임 내에서 탐색할 수 있는 빈 페이지입니다.
     /// </summary>
     /// 
-    public sealed partial class MainPage : Page, INotifyPropertyChanged
-    {    
-        private List<Investment> rate = new List<Investment>();
-        ObservableCollection<Rootobject> Price = new ObservableCollection<Rootobject>();
-
-        public string LiveTime => DateTime.Now.ToString();
-
-        private string BaseUrl => "https://api.korbit.co.kr/v1/ticker/detailed?currency_pair=";
-
+    public sealed partial class MainPage : Page
+    {
         public MainPage()
         {
             this.InitializeComponent();
-            
-            Loaded += MainPage_Loaded;
-        }
-
-        private void MainPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            rate.Add(new Investment { Sname = "모네로 ->", Hstock = 530000, Smoney = 70000, Sper = 32, Goal = 800000 });
-            rate.Add(new Investment { Sname = "리플 ->", Hstock = 4300, Smoney = 3800, Sper = -13, Goal = 4500 });
-            rate.Add(new Investment { Sname = "스팀 ->", Hstock = 2200, Smoney = 5000, Sper = 25, Goal = 15000 });
-
-            ListInvest_Money.ItemsSource = rate;
-            Storage.ItemsSource = rate;
-
-            init_Sell_Buy();
-
-            LiveTimer();
-            GetListData();
-        }
-
-        private void LiveTimer()
-        {
-            DispatcherTimer timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-            timer.Tick += (s, e) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs((nameof(LiveTime))));
-            timer.Start();
-        }
-
-        private string GetCoinURL(Coins coin)
-        {
-            return BaseUrl + coin;
-        }
-
-        // json 처리
-        private void GetListData()
-        {
-            HttpClient client = new HttpClient();
-            Array coins = Enum.GetValues(typeof(Coins));
-            ListInvest_Chart.ItemsSource = Price;
-
-            DispatcherTimer timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(0) };
-            timer.Tick += async (sender, e) =>
-            {
-                // Timer instantly execute handler and then next handler call to every 5 seconds
-                if (timer.Interval.Seconds == 0)
-                {
-                    timer.Stop();
-                    timer.Interval = TimeSpan.FromSeconds(5);
-                    timer.Start();
-                }
-
-                Price.Clear();
-                foreach (Coins coin in coins)
-                {
-                    string response = await client.GetStringAsync(GetCoinURL(coin));
-                    // json 데이터 가져오기
-                    var data = JsonConvert.DeserializeObject<Rootobject>(response);
-                    data.Coin = coin;
-                    Price.Add(data);
-                }
-            };
-            timer.Start();
-        }
-
-        async Task<string> json_last(int i)
-        {
-                string url = "https://api.korbit.co.kr/v1/ticker/detailed?currency_pair=" + Enum.GetName(typeof(Coins), i);
-                HttpClient client = new HttpClient();
-                string response = await client.GetStringAsync(url);
-                var data = JsonConvert.DeserializeObject<Rootobject>(response);
-
-                return data.last.ToString();
-        }
-
-        async void init_Sell_Buy()
-        {
-            string data = await json_last(0);
-
-            B_O.Text = data.ToString();
-            S_O.Text = data.ToString();
         }
 
 
@@ -245,8 +150,6 @@ namespace xaml_list
 
         int Wdrwa;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         //출금
         private void Wd_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
@@ -261,49 +164,5 @@ namespace xaml_list
             K_Money.Text = Won.ToString();
             Withdraw.Text = "";
         }
-
-        // Buy_MenuFlyoutItem 조정
-        private async void B_Btc_Click(object sender, RoutedEventArgs e)
-        {
-            string data = await json_last(0);
-            B_O.Text = data.ToString();
-            Buy_Btc.Content = "BITCOIN - BTC";
-        }
-
-        private async void B_Btg_Click(object sender, RoutedEventArgs e)
-        {
-            string data = await json_last(1);
-            B_O.Text = data.ToString();
-            Buy_Btc.Content = "BITCOINGOLD-BTG";
-        }
-
-        private async void B_Bth_Click(object sender, RoutedEventArgs e)
-        {
-            string data = await json_last(2);
-            B_O.Text = data.ToString();
-            Buy_Btc.Content = "BITCOINCASH-BTH";
-        }
-
-        private async void B_Eth_Click(object sender, RoutedEventArgs e)
-        {
-            string data = await json_last(3);
-            B_O.Text = data.ToString();
-            Buy_Btc.Content = "ETHEREUM-ETH";
-        }
-
-        private async void B_Etc_Click(object sender, RoutedEventArgs e)
-        {
-            string data = await json_last(4);
-            B_O.Text = data.ToString();
-            Buy_Btc.Content = "ETHEREUM_CLASS-ETC";
-        }
-
-        private async void B_Xrp_Click(object sender, RoutedEventArgs e)
-        {
-            string data = await json_last(5);
-            B_O.Text = data.ToString();
-            Buy_Btc.Content = "REPLE-XRP";
-        }
-
     }
 }

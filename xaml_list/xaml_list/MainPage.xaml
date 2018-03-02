@@ -315,7 +315,7 @@
             <ptr:PullToRefreshBox x:Name="PtrBox"
                                   RefreshInvoked="PtrBox_RefreshInvoked">
               -->  
-                <ListView ItemsSource="{Binding Price}" Margin="10,10,10,0" RelativePanel.Below="Kind" Width="1460" Height="200">
+                <ListView ItemsSource="{Binding Price}" Margin="10,10,10,0" RelativePanel.Below="Kind" Width="1480" Height="200">
                
                 <ListView.ItemTemplate>
                     <DataTemplate>

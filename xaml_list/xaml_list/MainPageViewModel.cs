@@ -147,43 +147,39 @@ namespace xaml_list
             HttpClient client = new HttpClient();
             Array coins = Enum.GetValues(typeof(Coins));
 
-            DispatcherTimer timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(0) };
-            timer.Tick += async (sender, e) =>
-            {
-                // Timer instantly execute handler and then next handler call to every 5 seconds
-                if (timer.Interval.Seconds == 0)
-                {
-                    timer.Stop();
-                    timer.Interval = TimeSpan.FromSeconds(5);
-                    timer.Start();
-                }
-                
-                foreach (Coins coin in coins)
-                {
-                    string response = await client.GetStringAsync(GetCoinURL(coin));
-                    // json 데이터 가져오기
-                    var data = JsonConvert.DeserializeObject<Rootobject>(response);
-                    data.Coin = coin;
+            GetCoinsDetail(client, coins);
 
-                    if (Price.Contains(data))
-                    {
-                        Price[Price.IndexOf(data)] = data;
-                    }
-                    else
-                    {
-                        Price.Add(data);
-                    }
-
-                    if (!initFirst && coin == Coins.btc_krw)
-                    {
-                        SelectedCoin = CoinNameDictionary[coin];
-                        BuyingLast = data.last;
-                        SellLast = data.last;
-                        initFirst = true;
-                    }
-                }
-            };
+            DispatcherTimer timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
+            timer.Tick += (sender, e) => GetCoinsDetail(client, coins);
             timer.Start();
+        }
+
+        private async void GetCoinsDetail(HttpClient client, Array coins)
+        {
+            foreach (Coins coin in coins)
+            {
+                string response = await client.GetStringAsync(GetCoinURL(coin));
+                // json 데이터 가져오기
+                var data = JsonConvert.DeserializeObject<Rootobject>(response);
+                data.Coin = coin;
+
+                if (Price.Contains(data))
+                {
+                    Price[Price.IndexOf(data)] = data;
+                }
+                else
+                {
+                    Price.Add(data);
+                }
+
+                if (!initFirst && coin == Coins.btc_krw)
+                {
+                    SelectedCoin = CoinNameDictionary[coin];
+                    BuyingLast = data.last;
+                    SellLast = data.last;
+                    initFirst = true;
+                }
+            }
         }
     }
 }
